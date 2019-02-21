@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		body {
+			background: black;
+			overflow: hidden;
+		}
+		div {
+			width: 100px;
+			height: 100px;
+			position: absolute;
+			left: 0;
+			top: 0;
+			background: pink;
+		}
+	</style>
+</head>
+<body>
+	<div>
+		
+	</div>
+	<script>
+		//直线运动
+		let div = document.querySelector('div');
+		let speedX = 5;
+		let speedY = 3;
+		const move = () => {
+			let currentX = div.offsetLeft;
+			let currentY = div.offsetTop;
+			let left = currentX + speedX;
+			let top = currentY + speedY;
+
+			if(left < 0) {
+				speedX *= -1;
+			}
+
+			if(top < 0) {
+				speedY *= -1
+			}
+
+			if(left > window.innerWidth - div.offsetWidth) {
+				speedX*= -1;
+			}
+
+			if(top > window.innerHeight - div.offsetHeight) {
+				speedY *= -1;
+			}
+			div.style.left = left + 'px'
+			div.style.top = top + 'px'
+		}
+
+		setInterval(move, 16)
+	</script>
+</body>
+</html>

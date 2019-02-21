@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		.container, .circle {
+			position: absolute;
+		}
+
+		.container {
+			width: 1px;
+			height: 1px;
+			left: 100px;
+			top: 300px;
+			background: black;
+		}
+
+		.circle {
+			width: 30px;
+			height: 30px;
+			background: tan;
+			margin-left: -15px;
+			margin-top: -15px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="circle"></div>
+	</div>
+	<script>
+		let deg = 0;
+		let circle = document.querySelector('.circle')
+		let container = document.querySelector('.container')
+		let speedX = 0.5;
+		const zhuan = () => {
+			let x = 100 * Math.cos(deg * Math.PI / 180)
+			let y = 100 * Math.sin(deg * Math.PI / 180)
+
+			circle.style.left = x + 'px'
+			circle.style.top = y + 'px'
+		}
+
+		const move = () => {
+			let currentX = container.offsetLeft;
+			let left = currentX + speedX;
+			if(left < 15) {
+				speedX *= -1;
+			}
+
+			if(left > window.innerWidth - 15) {
+				speedX *= -1;
+			}
+
+			container.style.left = left + 'px'
+		}
+
+		setInterval(()=>{
+			deg++;
+			zhuan();
+			move();
+		}, 16)
+	</script>
+</body>
+</html>

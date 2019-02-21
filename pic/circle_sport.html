@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        div{
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: skyblue;
+        }
+        .red{
+            width: 20px;
+            height:20px;
+            background: red;
+            left: 500px;
+            top: 300px;  
+        }
+        .green{
+            width: 30px;
+            height: 30px;
+            background:green;
+            left: 300px;
+            top: 500px;
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="green"></div>
+    <div class="red"></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+ 
+ 
+    <script>
+        let divs = document.querySelectorAll('div'); 
+        let move = (box) => {
+           if (box.speedX === undefined ){
+               box.speedX = Math.floor(Math.random() * 3) + 2;
+           }
+           if(box.speedY === undefined){
+               box.speedY = Math.floor(Math.random() * 3) + 2;
+           }
+           var left = box.offsetLeft + box.speedX;
+           var top = box.offsetTop + box.speedY;
+           if(left < 0 || left > innerWidth - box.offsetWidth - 3){
+               box.speedX *= -1;
+           }
+           if(top < 0 || top > innerHeight - box.offsetHeight - 3){
+               box.speedY *= -1
+           }
+
+           box.style.left = left + 'px';
+           box.style.top = top + 'px';
+        }
+        
+        setInterval(function(){
+            for(let i = 0 ; i < divs.length ; i++){
+                move(divs[i]);
+            }
+        },16)
+
+        
+    
+
+    </script>
+</body>
+</html>

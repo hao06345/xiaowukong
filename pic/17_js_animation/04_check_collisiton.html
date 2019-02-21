@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			overflow: hidden;
+		}
+		.black, .blue {
+			position: absolute;
+			border-radius: 50%;
+		}
+
+		.black {
+			width: 50px;
+			height: 50px;
+			left: 300px;
+			top: 300px;
+			background: black;
+		}
+
+		.blue {
+			width: 100px;
+			height: 100px;
+			left: 0;
+			top: 0;
+			background: blue;
+		}
+	</style>
+</head>
+<body>
+	<div class="black"></div>
+	<div class="blue"></div>
+	<script>
+		// let speedX = 3;
+		// let speedY = 5;
+		let divs = document.querySelectorAll('div')
+
+		const move = (div) => {
+			if(div.speedX === undefined) {
+				div.speedX = Math.floor(Math.random() * 3) + 2
+			} 
+
+			if(div.speedY === undefined) {
+				div.speedY = Math.floor(Math.random() * 3) + 2
+			}
+
+			let currentX = div.offsetLeft;
+			let currentY = div.offsetTop;
+
+			let temp;
+			for(var i=0; i<divs.length; i++) {
+				if(checkCollisionBall(divs[i], div)) {
+					// [divs[i].speedX, div.speedX] = [div.speedX, divs[i].speedX]
+					// [divs[i].speedY, div.speedY] = [div.speedY, divs[i].speedY]
+
+					temp = divs[i].speedX;
+					divs[i].speedX = div.speedX
+					div.speedX = temp;
+
+					temp = divs[i].speedY;
+					divs[i].speedY = div.speedY;
+					div.speedY = temp;
+				}
+			}
+
+
+			let left = currentX + div.speedX;
+			let top = currentY + div.speedY;
+
+			if(left < 0 || left > window.innerWidth - div.offsetWidth) {
+				div.speedX *= -1;
+			}
+
+			if(top < 0 || top > window.innerHeight - div.offsetHeight) {
+				div.speedY *= -1;
+			}
+
+			
+			console.log(top)
+			div.style.left = left + 'px'
+			div.style.top = top + 'px'
+		}                 
+
+
+		
+		setInterval(() => {
+			for(var i=0; i<divs.length; i++) {
+				move(divs[i]);
+			}         
+		}, 16)
+
+		//检测box1和box2的碰撞，撞上返回1，没撞上返回2
+		function checkCollision(box1, box2) {
+			if(box1 === box2) {
+				return false;
+			}
+
+			var center1 = {
+				x: box1.offsetLeft + box1.offsetWidth/2,
+				y: box1.offsetTop + box1.offsetHeight/2
+			}
+
+			var center2 = {
+				x: box2.offsetLeft + box2.offsetWidth/2,
+				y: box2.offsetTop + box2.offsetHeight/2
+			}
+
+			var distX = Math.abs(center1.x - center2.x);
+			var distY = Math.abs(center1.y - center2.y);
+
+			if(distX < (box1.offsetWidth + box2.offsetWidth)/2 &&
+				distY < (box1.offsetHeight + box2.offsetHeight) /2) {
+				box1.style.background = 'red';
+				return true;
+			}
+
+
+			return false
+		}
+
+
+		function checkCollisionBall(box1, box2) {
+			if(box1 === box2) {
+				return false;
+			}
+
+			let center1 = {
+				x: box1.offsetLeft + box1.offsetWidth/2,
+				y: box1.offsetTop + box1.offsetHeight/2
+			}
+
+			let center2 = {
+				x: box2.offsetLeft + box2.offsetWidth/2,
+				y: box2.offsetTop + box2.offsetHeight/2
+			}
+
+			let distX = Math.abs(center1.x - center2.x);
+			let distY = Math.abs(center1.y - center2.y);
+
+			
+			let dist = Math.sqrt(distX * distX + distY * distY)
+			if(dist < (box1.offsetWidth + box2.offsetWidth) / 2) {
+				return true
+			}
+
+			return false
+		}
+	</script>
+</body>
+</html>

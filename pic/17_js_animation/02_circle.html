@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		#circle {
+			width: 30px;
+			height: 30px;
+			background: red;
+			position: absolute;
+			left: 700px;
+			top: 500px;
+			margin-left: -15px;
+			margin-top: -15px;
+		}
+
+		#line {
+			position: absolute;
+			left: 100px;
+			top: 100px;
+			width: 400px;
+			height: 400px;
+			border: 1px solid black;
+			border-radius: 50%; 
+		}
+	</style>
+</head>
+<body>
+	<div id="circle"></div>
+	<div id="line"></div>
+	<script>
+		// x =centerX +  radius * cos(angle * 3.14 / 180)
+		// y = centerY +radius * sin(angle *3.14 /180);
+
+		//让一个DIV，以500, 500为圆心，以200为半径画圆
+
+		let deg = 0;
+		let div = document.querySelector('div');
+		const move = () => {
+			let x = 300 + 200 * Math.cos(deg * Math.PI / 180);
+			let y = 300 + 200 * Math.sin(deg * Math.PI / 180);
+
+			div.style.left = x + 'px'
+			div.style.top = y + 'px'
+		}
+
+		setInterval(()=>{
+			deg++
+			move();
+		}, 16)
+	</script>
+</body>
+</html>

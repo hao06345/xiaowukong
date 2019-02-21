@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		ul, li {
+			list-style: none;
+		}
+
+		.slider {
+			width: 510px;
+			height: 454px;
+			position: relative;
+			user-select: none;
+		}
+
+		.slider .list li {
+			position: absolute;
+			opacity: 0;
+			transition: opacity 0.3s;
+		}
+
+		.slider .list li img {
+			display: block;
+		}
+
+		.slider .list  li.current {
+			opacity: 1;
+			z-index: 1;
+		}
+
+		.btn {
+			width: 50px;
+			height: 40px;
+			line-height: 40px;
+			font-size: 20px;
+			background: black;
+			opacity: .5;
+			position: absolute;
+			top: 50%;
+			color: white;
+			z-index: 2;
+			text-align: center;
+			font-weight: bold;
+			cursor: pointer;
+			transition: opacity .5s;
+		}
+
+		.btn:hover {
+			opacity: .8;
+		}
+
+		.prev {
+			left: 20px;
+		}
+
+		.next {
+			right: 20px;
+		}
+
+		.pagination {
+			position: absolute;
+			z-index: 2;
+			bottom: 20px;
+			left: 20px;
+		}
+
+		.pagination li {
+			float: left;
+			width: 30px;
+			height: 30px;
+			background: white;
+			opacity: 0.8;
+			margin-left: 5px;
+			cursor: pointer;
+
+		}
+
+		.pagination li.focus {
+			background: hotpink;
+		}
+	</style>
+</head>
+<body>
+	<div class="slider">
+		<ul class="list">
+			<!-- (li>a[href="#$"]>img[src="./imgs/img ($).jpg"])*4 -->
+			<li class="current"><a href="#1"><img src="./imgs/img (1).jpg" alt=""></a></li>
+			<li><a href="#2"><img src="./imgs/img (2).jpg" alt=""></a></li>
+			<li><a href="#3"><img src="./imgs/img (3).jpg" alt=""></a></li>
+			<li><a href="#4"><img src="./imgs/img (4).jpg" alt=""></a></li>
+			<li><a href="#1"><img src="./imgs/img (1).jpg" alt=""></a></li>
+			<li><a href="#2"><img src="./imgs/img (2).jpg" alt=""></a></li>
+			<li><a href="#1"><img src="./imgs/img (1).jpg" alt=""></a></li>
+			<li><a href="#2"><img src="./imgs/img (2).jpg" alt=""></a></li>
+		</ul>
+		<div class="btn prev"><</div>
+		<div class="btn next">></div>
+		<ul class="pagination">
+			<li class="focus"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+	<script>
+		var currentIndex = 0;
+		var len = document.querySelector('ul').childElementCount;
+		var id;
+
+		function slideTo(index) {
+
+			//设定焦点
+			//清除旧焦点
+			document.querySelector('.focus').className = '';
+
+			//设定新焦点
+			document.querySelectorAll('.pagination li')[index].className = 'focus';
+
+
+			//将index指向的图片，显示出来
+			//	1. 将.current的元素的类清掉
+			document.querySelector('.current').className = '';
+			//	2. 将index指向的li添加current
+			document.querySelectorAll('.slider .list li')[index].className = 'current';
+		}
+
+		function slideNext() {
+			currentIndex++;
+			if(currentIndex === len) {
+				currentIndex = 0;
+			}
+			slideTo(currentIndex);
+		}
+
+		function slidePrev() {
+			currentIndex--;
+			if(currentIndex === -1) {
+				currentIndex = len - 1;
+			}
+			slideTo(currentIndex);
+		}
+
+		document.querySelector('.prev').onclick = function () {
+			slidePrev();
+		}
+
+		document.querySelector('.next').onclick = slideNext;
+
+		var bullets = document.querySelectorAll('.pagination li')
+		for(let i=0; i<bullets.length; i++) {
+			bullets[i].onclick = function () {
+				console.log(i)
+				currentIndex = i;
+				slideTo(currentIndex)
+			}
+		}
+
+		function autoPlay() {
+			id = setInterval(function () {
+				slideNext()
+			}, 3000)
+		}
+
+		function stop() {
+			clearInterval(id);
+		}
+
+		// autoPlay()
+
+		document.querySelector('.slider').onmouseover = function () {
+			stop();
+		}
+
+		document.querySelector('.slider').onmouseout = function () {
+			autoPlay();
+		}
+	</script>
+</body>
+</html>

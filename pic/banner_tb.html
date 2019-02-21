@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style>
+        *{
+            margin:0;
+            padding:0;
+        }
+        img{
+            display: block;
+        }
+        .slider{
+            width: 510px;
+			height: 454px;
+            margin: 20px auto;
+            position: relative;
+            user-select: none;
+            overflow: hidden;
+        }
+        .slider .list {
+            width: 3000px;
+            height: 454px;
+            list-style: none;
+            transition: all .5s;
+        }
+        .slider .list li{
+            float: left;
+            width: 510px;
+			height: 454px;
+        }
+        .left{
+            width: 20px;
+            height: 40px;
+            background: rgba(0, 0, 0, .3);
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            font-size: 20px;
+            line-height: 40px;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .right{
+            width: 20px;
+            height: 40px;
+            background: rgba(0, 0, 0, .3);
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            font-size: 20px;
+            line-height: 40px;
+            cursor: pointer;
+            z-index: 2;
+        }
+        .left:hover{
+            background: rgba(0, 0, 0, .8); 
+        }
+        .right:hover{
+            background: rgba(0, 0, 0, .8); 
+        }
+        ul.circle{
+            width: 200px;
+            height: 20px;
+            list-style: none;
+            position: absolute;
+            left: 20px;
+            bottom: 20px;
+            z-index: 2;
+        }
+        .circle li{
+            float: left;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            margin-left:8px;
+            background: rgba(0, 0, 0, .7); 
+            cursor: pointer; 
+            
+        }
+        .circle .focus{
+            /* border:3px solid  rgba(255, 255, 255, .8); */
+            border-radius: 50%;
+            /* margin-top :-3px; */
+            background:#fff; 
+            
+        }
+	</style>
+</head>
+<body>
+	<div class="slider">
+		<ul class="list">
+			<!-- (li>a[href="#$"]>img[src="./imgs/img ($).jpg"])*4 -->
+			<li><a href="#1"><img src="./imgs/img (1).jpg" alt=""></a></li>
+			<li><a href="#2"><img src="./imgs/img (2).jpg" alt=""></a></li>
+			<li><a href="#3"><img src="./imgs/img (3).jpg" alt=""></a></li>
+			<li><a href="#4"><img src="./imgs/img (4).jpg" alt=""></a></li>
+			<li><a href="#1"><img src="./imgs/img (1).jpg" alt=""></a></li>
+		</ul>
+		<div class="left"><</div>
+		<div class="right">></div>
+		<ul class="circle">
+			<li class="focus"></li>
+			<li></li>
+			<li></li>
+			<li></li>
+		</ul>
+	</div>
+    <script>
+        const liWidth = document.querySelector('.list li').offsetWidth;
+        let len = document.querySelector('.list').childElementCount;
+        let list = document.querySelector('.list');
+        let butL = document.querySelector('.left');
+        let butR = document.querySelector('.right');
+        var count = 0;
+        let slideTo = (index) =>{
+            let dist = -liWidth * index;
+
+
+            
+            let map = {
+			 "-1": len-2,
+				0: 0,
+				1: 1,
+				2: 2,
+				3: 3,
+				4: 0,
+				5: 1
+			}
+            let focusIndex = map[index];
+            //console.log( 'map:' + map['-1'])
+            document.querySelector('.focus').className = '';
+            document.querySelectorAll('.circle li')[focusIndex].className = 'focus';
+
+
+
+
+            if (index === -1){ 
+                list.style.transitionDuration = '0s';
+                list.style.transform = `translate3d(${-liWidth*(len-1)}px,0px,0px)`;
+                setTimeout(function(){
+                    count = len-2;
+                    list.style.transitionDuration = '';
+                    list.style.transform = `translate3d(${-liWidth*count}px,0px,0px)`;
+                },23)
+                return;
+            }
+          
+            if(index === len){
+                list.style.transitionDuration = '0s';
+                list.style.transform = `translate3D(0px,0px,0px)`
+                setTimeout(function () {
+                    count = 1;
+                    list.style.transitionDuration = '';
+                    list.style.transform = `translate3d(${-liWidth}px,0px,0px)`
+                },50)
+                return;
+            }
+            list.style.transform = `translate3D(${dist}px,0px,0px)`;
+        }
+
+        var id;
+        let toRight = () => {
+            count ++;
+            slideTo(count)
+            //console.log('right');
+            console.log(count);
+        }
+        let toLeft = () => {
+            count --
+            slideTo(count);
+           // console.log('left')
+        }
+        butL.onclick = () => toLeft();
+        butR.onclick = () => toRight();
+        let autoPlay = () =>{
+            id = setInterval(toRight,1000);
+        }
+        autoPlay();
+        let stopPlay = () =>{
+            clearInterval(id);
+        }
+        document.querySelector('.list').onmouseover = () =>{
+            stopPlay();
+        }
+        document.querySelector('.list').onmouseout = () =>{
+            autoPlay();
+        }
+        let bullets = document.querySelector('.circle li');
+        for(let i =0 ; i < bullets.length; i++){
+            bullets[i].onclick = () =>{
+                slideTo(i);
+            }
+        }
+    </script>
+</body>
+</html>
